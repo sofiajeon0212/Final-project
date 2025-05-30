@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Dog Fetcher</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #ffb6e9;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Random Dog Fetcher</h1>
+        <button id="fetchBtn">Get Random Dog!</button>
+        <div class="breed-selector">
+            <label for="breedSelect">Or pick a breed:</label>
+            <select id="breedSelect">
+                <option value="">-- Select a breed --</option>
+            </select>
+        </div>        
+        <div id="result">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
