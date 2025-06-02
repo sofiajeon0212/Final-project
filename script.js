@@ -177,6 +177,7 @@ class DogGallery {
     }
 
     setupEventListeners() {
+        document.getElementById("slideshowBtn").addEventListener("click", () => this.startSlideshow());
         document.getElementById("clearFavoritesBtn").addEventListener("click", () => this.clearAllFavorites());
         document.getElementById("fetchBtn").addEventListener("click", () => this.fetchRandomDogs());
         document.getElementById("breedSelect").addEventListener("change", (e) => {
