@@ -72,7 +72,7 @@ class DogGallery {
         const dogImages = dogUrls.map(url => `
             <div class="dog-container">
                 <img src="${url}" class="dog-image">
-                <button class="favorite-btn" data-url="${url}">❤️ Save</button>
+                <button class="favorite-btn" data-url="${url}"> Save</button>
             </div>
         `).join("");
         
@@ -100,6 +100,9 @@ class DogGallery {
     displayFavorites() {
         const container = document.getElementById("favorites-container");
         const section = document.getElementById("favorites-section");
+        const countElement = document.getElementById("favorites-count");
+    
+        countElement.textContent = `${this.favorites.length} saved`; // Update counter
         
         if (this.favorites.length === 0) {
             section.style.display = 'none';
@@ -110,11 +113,10 @@ class DogGallery {
         container.innerHTML = this.favorites.map(url => `
             <div class="dog-container">
                 <img src="${url}" class="dog-image">
-                <button class="remove-btn" data-url="${url}">❌ Remove</button>
+                <button class="remove-btn" data-url="${url}"> Remove</button>
             </div>
         `).join("");
 
-        // Add event listeners to remove buttons
         document.querySelectorAll('.remove-btn').forEach(btn => {
             btn.addEventListener('click', () => this.removeFromFavorites(btn.dataset.url));
         });
@@ -136,7 +138,6 @@ class DogGallery {
     }
 }
 
-// Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     const dogApp = new DogGallery();
 });
