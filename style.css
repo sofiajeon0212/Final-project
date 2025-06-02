@@ -97,3 +97,37 @@ h1 {
     font-size: 14px;
     margin-top: 10px;
 }
+
+.dog-container {
+    position: relative;
+}
+
+.favorite-btn, .remove-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.favorite-btn:hover {
+    background: #ffb6e9;
+    color: white;
+}
+
+.remove-btn:hover {
+    background: #ff6b6b;
+    color: white;
+}
+
+#favorites-section {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
