@@ -1,5 +1,7 @@
 class DogGallery {
     constructor() {
+        this.currentBreed = null;
+        this.currentPage = 1;
         this.breeds = [];
         this.favorites = JSON.parse(localStorage.getItem('dogFavorites')) || [];
         this.init();
@@ -90,22 +92,33 @@ class DogGallery {
         }
     }
 
-    async fetchBreedDogs(breed) {
+    async fetchBreedDogs(breed, page = 1) {
+        this.currentBreed = breed;
+        this.currentPage = page;
+    
         const resultDiv = document.getElementById("result");
         resultDiv.innerHTML = `<div class="loader"></div><p>Loading ${breed}s...</p>`;
     
         try {
-            const imagesRes = await fetch(`https://dog.ceo/api/breed/${breed}/images/random/3`);
-            const imagesData = await imagesRes.json();
-            const infoRes = await fetch(`https://api.thedogapi.com/v1/breeds/search?q=${breed}`);
-            const infoData = await infoRes.json();
-            const breedInfo = infoData[0] || { temperament: "Unknown", life_span: "N/A" };
-    
-            this.displayDogs(imagesData.message, breed, breedInfo); 
+            const response = await fetch(
+                `https://dog.ceo/api/breed/${breed}/images/random/${3 * page}` 
+            );
+            const data = await response.json();
+            this.displayDogs(data.message, breed);
+            
+            if (page < 3) { 
+                resultDiv.innerHTML += `
+                    <button id="loadMoreBtn" style="margin-top: 20px;">⬇️ Load More ${breed}s</button>
+                `;
+                document.getElementById("loadMoreBtn").addEventListener("click", () => 
+                    this.fetchBreedDogs(breed, page + 1)
+                );
+            }
         } catch (error) {
-            resultDiv.innerHTML = `<p>Couldn't load ${breed} info. Try another breed!</p>`;
+            resultDiv.innerHTML = `<p>Couldn't load ${breed} pics. Try again!</p>`;
         }
     }
+    
 
     displayDogs(dogUrls, title, breedInfo = null) {
         const resultDiv = document.getElementById("result");
