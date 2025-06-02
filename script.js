@@ -110,20 +110,20 @@ class DogGallery {
         const section = document.getElementById("favorites-section");
         const countElement = document.getElementById("favorites-count");
     
-        countElement.textContent = `${this.favorites.length} saved`; // Update counter
-        
+        countElement.textContent = `${this.favorites.length} saved`; 
+
         if (this.favorites.length === 0) {
             section.style.display = 'none';
             return;
+        } else {
+            section.style.display = 'block';
+            container.innerHTML = this.favorites.map(url => `
+                <div class="dog-container">
+                    <img src="${url}" class="dog-image">
+                    <button class="remove-btn" data-url="${url}"> Remove</button>
+                </div>
+            `).join("");
         }
-
-        section.style.display = 'block';
-        container.innerHTML = this.favorites.map(url => `
-            <div class="dog-container">
-                <img src="${url}" class="dog-image">
-                <button class="remove-btn" data-url="${url}"> Remove</button>
-            </div>
-        `).join("");
 
         document.querySelectorAll('.remove-btn').forEach(btn => {
             btn.addEventListener('click', () => this.removeFromFavorites(btn.dataset.url));
