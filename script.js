@@ -13,6 +13,34 @@ class DogGallery {
         }
     }
 
+    startSlideshow() {
+        if (this.favorites.length === 0) {
+            alert("No favorites to show! Save some dogs first.");
+            return;
+        }
+    
+        let currentIndex = 0;
+        const slideshowContainer = document.createElement("div");
+        slideshowContainer.className = "slideshow";
+        slideshowContainer.innerHTML = `
+            <img src="${this.favorites[currentIndex]}" class="slideshow-img">
+            <button id="stopSlideshow">⏹ Stop</button>
+        `;
+    
+        document.body.appendChild(slideshowContainer);
+    
+        const intervalId = setInterval(() => {
+            currentIndex = (currentIndex + 1) % this.favorites.length;
+            slideshowContainer.querySelector("img").src = this.favorites[currentIndex];
+        }, 2000);
+    
+        document.getElementById("stopSlideshow").addEventListener("click", () => {
+            clearInterval(intervalId);
+            slideshowContainer.remove();
+        });
+    }
+    
+
     async init() {
         await this.loadBreeds();
         this.setupEventListeners();
@@ -102,7 +130,7 @@ class DogGallery {
             <div class="dog-grid">${dogImages}</div>
             <p>More ${title}? Click again!</p>
         `;
-        
+
         document.querySelectorAll('.favorite-btn').forEach(btn => {
             btn.addEventListener('click', () => this.addToFavorites(btn.dataset.url));
         });
