@@ -156,3 +156,10 @@ h1 {
     color: #666;
     font-size: 0.9em;
 }
+
+.breed-info {
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}

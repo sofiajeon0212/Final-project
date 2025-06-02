@@ -65,17 +65,21 @@ class DogGallery {
     async fetchBreedDogs(breed) {
         const resultDiv = document.getElementById("result");
         resultDiv.innerHTML = `<div class="loader"></div><p>Loading ${breed}s...</p>`;
-
+    
         try {
-            const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random/3`);
-            const data = await response.json();
-            this.displayDogs(data.message, breed);
+            const imagesRes = await fetch(`https://dog.ceo/api/breed/${breed}/images/random/3`);
+            const imagesData = await imagesRes.json();
+            const infoRes = await fetch(`https://api.thedogapi.com/v1/breeds/search?q=${breed}`);
+            const infoData = await infoRes.json();
+            const breedInfo = infoData[0] || { temperament: "Unknown", life_span: "N/A" };
+    
+            this.displayDogs(imagesData.message, breed, breedInfo); 
         } catch (error) {
-            resultDiv.innerHTML = `<p>Couldn't load ${breed} pics. Try another breed!</p>`;
+            resultDiv.innerHTML = `<p>Couldn't load ${breed} info. Try another breed!</p>`;
         }
     }
 
-    displayDogs(dogUrls, title) {
+    displayDogs(dogUrls, title, breedInfo = null) {
         const resultDiv = document.getElementById("result");
         const dogImages = dogUrls.map(url => `
             <div class="dog-container">
@@ -83,14 +87,22 @@ class DogGallery {
                 <button class="favorite-btn" data-url="${url}"> Save</button>
             </div>
         `).join("");
-        
+    
+        const breedDetails = breedInfo ? `
+            <div class="breed-info">
+                <h3>${title} Info</h3>
+                <p><strong>Temperament:</strong> ${breedInfo.temperament || "Unknown"}</p>
+                <p><strong>Lifespan:</strong> ${breedInfo.life_span || "N/A"}</p>
+            </div>
+        ` : "";
+    
         resultDiv.innerHTML = `
             <h2>${title}</h2>
+            ${breedDetails}
             <div class="dog-grid">${dogImages}</div>
             <p>More ${title}? Click again!</p>
         `;
-
-        // Add event listeners to new favorite buttons
+        
         document.querySelectorAll('.favorite-btn').forEach(btn => {
             btn.addEventListener('click', () => this.addToFavorites(btn.dataset.url));
         });
