@@ -5,6 +5,14 @@ class DogGallery {
         this.init();
     }
 
+    clearAllFavorites() {
+        if (confirm("Delete all favorites?")) {
+            this.favorites = [];
+            localStorage.removeItem('dogFavorites');
+            this.displayFavorites();
+        }
+    }
+
     async init() {
         await this.loadBreeds();
         this.setupEventListeners();
@@ -129,8 +137,8 @@ class DogGallery {
     }
 
     setupEventListeners() {
+        document.getElementById("clearFavoritesBtn").addEventListener("click", () => this.clearAllFavorites());
         document.getElementById("fetchBtn").addEventListener("click", () => this.fetchRandomDogs());
-        
         document.getElementById("breedSelect").addEventListener("change", (e) => {
             const breed = e.target.value;
             if (breed) this.fetchBreedDogs(breed);
