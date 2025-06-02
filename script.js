@@ -66,4 +66,77 @@ class DogGallery {
             resultDiv.innerHTML = `<p>Couldn't load ${breed} pics. Try another breed!</p>`;
         }
     }
+
+    displayDogs(dogUrls, title) {
+        const resultDiv = document.getElementById("result");
+        const dogImages = dogUrls.map(url => `
+            <div class="dog-container">
+                <img src="${url}" class="dog-image">
+                <button class="favorite-btn" data-url="${url}">❤️ Save</button>
+            </div>
+        `).join("");
+        
+        resultDiv.innerHTML = `
+            <h2>${title}</h2>
+            <div class="dog-grid">${dogImages}</div>
+            <p>More ${title}? Click again!</p>
+        `;
+
+        // Add event listeners to new favorite buttons
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            btn.addEventListener('click', () => this.addToFavorites(btn.dataset.url));
+        });
+    }
+
+    addToFavorites(url) {
+        if (!this.favorites.includes(url)) {
+            this.favorites.push(url);
+            localStorage.setItem('dogFavorites', JSON.stringify(this.favorites));
+            this.displayFavorites();
+            alert('Dog added to favorites!');
+        }
+    }
+
+    displayFavorites() {
+        const container = document.getElementById("favorites-container");
+        const section = document.getElementById("favorites-section");
+        
+        if (this.favorites.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+        container.innerHTML = this.favorites.map(url => `
+            <div class="dog-container">
+                <img src="${url}" class="dog-image">
+                <button class="remove-btn" data-url="${url}">❌ Remove</button>
+            </div>
+        `).join("");
+
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', () => this.removeFromFavorites(btn.dataset.url));
+        });
+    }
+
+    removeFromFavorites(url) {
+        this.favorites = this.favorites.filter(fav => fav !== url);
+        localStorage.setItem('dogFavorites', JSON.stringify(this.favorites));
+        this.displayFavorites();
+    }
+
+    setupEventListeners() {
+        document.getElementById("fetchBtn").addEventListener("click", () => this.fetchRandomDogs());
+        
+        document.getElementById("breedSelect").addEventListener("change", (e) => {
+            const breed = e.target.value;
+            if (breed) this.fetchBreedDogs(breed);
+        });
+    }
 }
+
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const dogApp = new DogGallery();
+});
