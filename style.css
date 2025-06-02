@@ -193,3 +193,13 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
 }
+
+#slideshowBtn:hover {
+    background: #4CAF50;
+    color: white;
+}
+
+.dog-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
