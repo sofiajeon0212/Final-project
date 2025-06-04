@@ -108,7 +108,7 @@ class DogGallery {
             
             if (page < 3) { 
                 resultDiv.innerHTML += `
-                    <button id="loadMoreBtn" style="margin-top: 20px;">⬇️ Load More ${breed}s</button>
+                    <button id="loadMoreBtn" style="margin-top: 20px;">⬇Load More ${breed}s</button>
                 `;
                 document.getElementById("loadMoreBtn").addEventListener("click", () => 
                     this.fetchBreedDogs(breed, page + 1)
@@ -143,9 +143,11 @@ class DogGallery {
             <div class="dog-grid">${dogImages}</div>
             <p>More ${title}? Click again!</p>
         `;
-
         document.querySelectorAll('.favorite-btn').forEach(btn => {
-            btn.addEventListener('click', () => this.addToFavorites(btn.dataset.url));
+            btn.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                this.addToFavorites(btn.dataset.url); 
+            });
         });
     }
 
@@ -190,6 +192,7 @@ class DogGallery {
     }
 
     setupEventListeners() {
+        document.getElementById("premiumBtn").addEventListener("click", () => this.fetchPremiumDogs());
         document.getElementById("slideshowBtn").addEventListener("click", () => this.startSlideshow());
         document.getElementById("clearFavoritesBtn").addEventListener("click", () => this.clearAllFavorites());
         document.getElementById("fetchBtn").addEventListener("click", () => this.fetchRandomDogs());
@@ -200,6 +203,18 @@ class DogGallery {
     }
 }
 
+class PremiumDogGallery extends DogGallery {
+    constructor() {
+        super(); 
+        this.premiumBreeds = ["shiba", "poodle", "bulldog"]; 
+    }
+
+    async fetchPremiumDogs() {
+        const randomBreed = this.premiumBreeds[Math.floor(Math.random() * this.premiumBreeds.length)];
+        await this.fetchBreedDogs(randomBreed);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const dogApp = new DogGallery();
+    window.dogApp = new PremiumDogGallery(); 
 });
