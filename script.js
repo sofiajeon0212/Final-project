@@ -119,13 +119,13 @@ class DogGallery {
         }
     }
     
-
     displayDogs(dogUrls, title, breedInfo = null) {
         const resultDiv = document.getElementById("result");
+        
         const dogImages = dogUrls.map(url => `
             <div class="dog-container">
                 <img src="${url}" class="dog-image">
-                <button class="favorite-btn" data-url="${url}"> Save</button>
+                <button class="favorite-btn" data-url="${url}">❤️ Save</button>
             </div>
         `).join("");
     
@@ -143,14 +143,15 @@ class DogGallery {
             <div class="dog-grid">${dogImages}</div>
             <p>More ${title}? Click again!</p>
         `;
-        document.querySelectorAll('.favorite-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                this.addToFavorites(btn.dataset.url); 
-            });
+    
+        resultDiv.addEventListener('click', (e) => {
+            if (e.target.classList.contains('favorite-btn')) {
+                e.preventDefault();
+                this.addToFavorites(e.target.dataset.url);
+            }
         });
     }
-
+    
     addToFavorites(url) {
         if (!this.favorites.includes(url)) {
             this.favorites.push(url);
