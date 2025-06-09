@@ -1,4 +1,5 @@
-// All done and ready to hand in!
+// not done yet, I forgot to add comments.
+
 class DogGallery {
     constructor() {
         this.currentBreed = null;
