@@ -1,3 +1,4 @@
+// All done and ready to hand in!
 class DogGallery {
     constructor() {
         this.currentBreed = null;
